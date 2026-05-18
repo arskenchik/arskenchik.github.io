@@ -8,541 +8,428 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --bg2: #111111;
-    --bg3: #181818;
-    --border: rgba(255,255,255,0.08);
-    --border-hi: rgba(255,255,255,0.16);
-    --text: #e8e8e4;
-    --muted: #888880;
-    --dim: #555550;
-    --accent: #c8f080;
-    --accent2: #60d0b0;
-    --accent3: #f08060;
-    --tag-bg: rgba(200,240,128,0.08);
-    --tag-text: #a0c060;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.7;
-    min-height: 100vh;
-  }
+:root {
+  --bg: #0c0c0c;
+  --bg2: #131313;
+  --bg3: #1a1a1a;
+  --border: rgba(255,255,255,0.07);
+  --border-hi: rgba(255,255,255,0.14);
+  --text: #e4e4e0;
+  --muted: #808078;
+  --dim: #484844;
+  --accent: #b8e860;
+  --accent-dim: rgba(184,232,96,0.1);
+  --accent2: #50c8a8;
+  --accent3: #e87050;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+.container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
 
-  /* ─── NOISE TEXTURE ─── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0;
-  }
-  .wrap { position: relative; z-index: 1; }
+/* HEADER */
+header { padding: 72px 0 60px; border-bottom: 1px solid var(--border); }
+.header-grid { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
+.badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(184,232,96,0.25); padding: 3px 9px; border-radius: 2px; display: inline-block; margin-bottom: 20px; }
+h1 { font-size: clamp(30px, 4vw, 44px); font-weight: 300; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 14px; }
+h1 b { font-weight: 500; }
+.subtitle { color: var(--muted); font-size: 14px; max-width: 460px; margin-bottom: 30px; line-height: 1.65; }
+.links { display: flex; flex-wrap: wrap; gap: 6px; }
+.link-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-decoration: none; border: 1px solid var(--border); padding: 5px 12px; border-radius: 3px; background: var(--bg2); transition: color .15s, border-color .15s; display: flex; align-items: center; gap: 5px; }
+.link-btn:hover { color: var(--text); border-color: var(--border-hi); }
+.link-btn.primary { border-color: rgba(184,232,96,0.3); color: var(--accent); background: var(--accent-dim); }
+.header-meta { font-family: var(--mono); font-size: 11px; color: var(--dim); line-height: 2.2; text-align: right; padding-top: 4px; }
+.header-meta .open { color: var(--accent); }
 
-  /* ─── LAYOUT ─── */
-  .container { max-width: 860px; margin: 0 auto; padding: 0 28px; }
+/* CHIPS */
+.chips-row { padding: 18px 0; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--mono); font-size: 11px; padding: 3px 9px; border: 1px solid var(--border); border-radius: 2px; color: var(--dim); background: var(--bg2); }
+.chip.on { border-color: rgba(184,232,96,0.22); color: var(--accent); background: var(--accent-dim); }
 
-  /* ─── HEADER ─── */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 64px 0 56px;
-  }
-  .header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
-  .header-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  h1 {
-    font-size: clamp(28px, 5vw, 42px);
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-  h1 strong { font-weight: 500; }
-  .subtitle {
-    font-size: 15px;
-    color: var(--muted);
-    max-width: 440px;
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-  .links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
-  .links a {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: color 0.2s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .links a:hover { color: var(--text); }
-  .links a .arrow { opacity: 0.4; font-size: 10px; }
+/* SECTION */
+section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; padding-bottom: 80px; }
+.sec-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-bottom: 40px; display: flex; align-items: center; gap: 12px; }
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* ─── SKILLS STRIP ─── */
-  .skills-strip {
-    border-bottom: 1px solid var(--border);
-    padding: 20px 0;
-    overflow-x: auto;
-  }
-  .skills-inner { display: flex; gap: 8px; flex-wrap: wrap; }
-  .skill-chip {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    padding: 4px 10px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--muted);
-    white-space: nowrap;
-    background: var(--bg2);
-  }
-  .skill-chip.hi {
-    border-color: rgba(200,240,128,0.25);
-    color: var(--accent);
-    background: var(--tag-bg);
-  }
+/* PROJECT */
+.project { margin-bottom: 60px; }
+.project:last-child { margin-bottom: 0; }
+.project-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 6px; flex-wrap: wrap; }
+.project-title { font-size: 18px; font-weight: 500; letter-spacing: -0.015em; color: var(--text); }
+.project-date { font-family: var(--mono); font-size: 11px; color: var(--dim); padding-top: 5px; white-space: nowrap; }
+.project-links { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+.gh-link { font-family: var(--mono); font-size: 11px; color: var(--accent2); text-decoration: none; border: 1px solid rgba(80,200,168,0.25); padding: 3px 10px; border-radius: 2px; background: rgba(80,200,168,0.05); transition: color .15s, border-color .15s; }
+.gh-link:hover { color: #80e0c8; border-color: rgba(80,200,168,0.4); }
+.nda-pill { font-family: var(--mono); font-size: 10px; color: #c06848; letter-spacing: 0.06em; border: 1px solid rgba(200,104,72,0.3); padding: 3px 9px; border-radius: 2px; background: rgba(200,104,72,0.06); }
+.live-pill { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.06em; border: 1px solid rgba(184,232,96,0.25); padding: 3px 9px; border-radius: 2px; background: var(--accent-dim); display: inline-flex; align-items: center; gap: 5px; }
+.live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.org-label { font-family: var(--mono); font-size: 11px; color: var(--dim); }
+.project-desc { color: var(--muted); font-size: 14px; margin-bottom: 16px; line-height: 1.65; max-width: 700px; }
+.bullets { list-style: none; margin-bottom: 20px; display: flex; flex-direction: column; gap: 7px; }
+.bullets li { font-size: 13px; color: var(--muted); padding-left: 18px; position: relative; line-height: 1.55; }
+.bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-family: monospace; font-size: 11px; top: 2px; }
+.bullets li b { color: var(--text); font-weight: 500; }
+.tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 22px; }
+.tag { font-family: var(--mono); font-size: 11px; padding: 2px 8px; border-radius: 2px; }
+.tag.g { background: var(--accent-dim); color: #90b840; }
+.tag.b { background: rgba(80,200,168,0.08); color: #50c8a8; }
+.tag.o { background: rgba(232,112,80,0.08); color: #d87060; }
+.tag.n { background: rgba(100,100,96,0.15); color: var(--dim); }
 
-  /* ─── SECTION ─── */
-  section { padding: 64px 0; border-bottom: 1px solid var(--border); }
-  section:last-of-type { border-bottom: none; }
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--dim);
-    text-transform: uppercase;
-    margin-bottom: 36px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* GALLERY */
+.gallery { display: grid; gap: 8px; margin-top: 4px; }
+.gallery.g2 { grid-template-columns: 1fr 1fr; }
+.gallery.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.img-wrap { background: #060606; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; cursor: zoom-in; }
+.img-wrap img { width: 100%; height: auto; display: block; transition: opacity .2s; }
+.img-wrap:hover img { opacity: 0.88; }
+.img-caption { padding: 8px 10px; font-family: var(--mono); font-size: 10px; color: var(--dim); border-top: 1px solid var(--border); line-height: 1.55; background: var(--bg2); }
+.img-caption b { color: var(--muted); }
 
-  /* ─── PROJECT CARDS ─── */
-  .project-grid { display: flex; flex-direction: column; gap: 2px; }
-  .project-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 28px 32px;
-    transition: border-color 0.2s, background 0.2s;
-    cursor: default;
-  }
-  .project-card:hover { border-color: var(--border-hi); background: var(--bg3); }
-  .project-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
-  .project-title {
-    font-size: 17px;
-    font-weight: 500;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
-  .project-title small {
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--dim);
-    margin-left: 10px;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .project-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-  .project-desc { color: var(--muted); font-size: 14px; margin-bottom: 16px; line-height: 1.65; }
-  .project-highlights { list-style: none; margin-bottom: 20px; display: flex; flex-direction: column; gap: 6px; }
-  .project-highlights li {
-    font-size: 13px;
-    color: var(--muted);
-    padding-left: 16px;
-    position: relative;
-    line-height: 1.55;
-  }
-  .project-highlights li::before {
-    content: '→';
-    position: absolute; left: 0;
-    color: var(--accent);
-    font-family: monospace;
-    font-size: 11px;
-    top: 2px;
-  }
-  .project-highlights li strong { color: var(--text); font-weight: 500; }
-  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-  .tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    padding: 3px 8px;
-    background: var(--tag-bg);
-    color: var(--tag-text);
-    border-radius: 3px;
-    letter-spacing: 0.03em;
-  }
-  .tag.blue { background: rgba(96,208,176,0.08); color: #60d0b0; }
-  .tag.orange { background: rgba(240,128,96,0.08); color: #e88060; }
-  .tag.gray { background: rgba(136,136,128,0.08); color: var(--dim); }
+/* LIGHTBOX */
+#lb { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 999; align-items: center; justify-content: center; cursor: zoom-out; }
+#lb.open { display: flex; }
+#lb img { max-width: 92vw; max-height: 90vh; border-radius: 4px; border: 1px solid var(--border); object-fit: contain; }
+#lb-close { position: fixed; top: 18px; right: 22px; font-family: var(--mono); font-size: 13px; color: var(--muted); cursor: pointer; background: none; border: none; letter-spacing: 0.05em; }
 
-  .nda-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    border: 1px solid rgba(240,128,96,0.3);
-    color: #c07050;
-    border-radius: 3px;
-    letter-spacing: 0.05em;
-    margin-bottom: 12px;
-  }
-  .nda-badge::before { content: '⊘'; font-size: 9px; }
+/* SKILLS */
+.stab { width: 100%; border-collapse: collapse; }
+.stab tr { border-bottom: 1px solid var(--border); }
+.stab tr:last-child { border-bottom: none; }
+.stab td { padding: 13px 0; vertical-align: top; }
+.stab td:first-child { width: 165px; font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.05em; padding-right: 20px; }
+.stab td:last-child { font-size: 13px; color: var(--muted); line-height: 1.75; }
 
-  .status-bar {
-    display: flex; align-items: center; gap: 8px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    margin-bottom: 14px;
-  }
-  .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 6px var(--accent);
-    flex-shrink: 0;
-  }
-  .status-dot.orange { background: var(--accent3); box-shadow: 0 0 6px var(--accent3); }
+/* TIMELINE */
+.tl { display: flex; flex-direction: column; gap: 28px; }
+.tl-row { display: grid; grid-template-columns: 148px 1fr; gap: 20px; }
+.tl-date { font-family: var(--mono); font-size: 11px; color: var(--dim); padding-top: 2px; line-height: 1.7; }
+.tl-role { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+.tl-org { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.tl-detail { font-size: 13px; color: var(--dim); line-height: 1.6; }
 
-  /* ─── SKILLS TABLE ─── */
-  .skills-table { width: 100%; border-collapse: collapse; }
-  .skills-table tr { border-bottom: 1px solid var(--border); }
-  .skills-table tr:last-child { border-bottom: none; }
-  .skills-table td { padding: 14px 0; vertical-align: top; }
-  .skills-table td:first-child {
-    width: 180px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    padding-right: 24px;
-    letter-spacing: 0.04em;
-  }
-  .skills-table td:last-child {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
+footer { padding: 36px 0; font-family: var(--mono); font-size: 11px; color: var(--dim); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+footer a { color: var(--dim); text-decoration: none; }
+footer a:hover { color: var(--muted); }
 
-  /* ─── EXPERIENCE TIMELINE ─── */
-  .timeline { display: flex; flex-direction: column; gap: 28px; }
-  .timeline-item { display: grid; grid-template-columns: 160px 1fr; gap: 24px; }
-  .timeline-date {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    padding-top: 2px;
-    letter-spacing: 0.04em;
-    line-height: 1.6;
-  }
-  .timeline-content {}
-  .timeline-role { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
-  .timeline-org { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-  .timeline-detail { font-size: 13px; color: var(--dim); line-height: 1.6; }
-
-  /* ─── FOOTER ─── */
-  footer {
-    padding: 40px 0;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 12px;
-  }
-  footer a { color: var(--dim); text-decoration: none; }
-  footer a:hover { color: var(--muted); }
-
-  @media (max-width: 600px) {
-    .timeline-item { grid-template-columns: 1fr; gap: 4px; }
-    .timeline-date { padding-top: 0; }
-    .project-card { padding: 20px; }
-  }
+@media (max-width: 640px) {
+  .header-grid { grid-template-columns: 1fr; }
+  .header-meta { text-align: left; }
+  .gallery.g2, .gallery.g3 { grid-template-columns: 1fr; }
+  .tl-row { grid-template-columns: 1fr; gap: 4px; }
+  .container { padding: 0 20px; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<div id="lb" onclick="closeLb()">
+  <button id="lb-close" onclick="closeLb()">✕ close</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
 <div class="container">
 
-<!-- HEADER -->
 <header>
-  <div class="header-inner">
+  <div class="header-grid">
     <div>
-      <div class="header-tag">// hardware portfolio</div>
-      <h1><strong>Arslan Kenbayev</strong></h1>
-      <p class="subtitle">Electrical Engineering student at KAIST — building hardware that closes the loop between sensors, circuits, and the physical world.</p>
+      <div class="badge">hardware portfolio</div>
+      <h1><b>Arslan Kenbayev</b></h1>
+      <p class="subtitle">Electrical Engineering student at KAIST — building hardware from schematic to field deployment. Embedded firmware, digital design, PCB bring-up, sensor systems.</p>
       <div class="links">
-        <a href="mailto:kenbaevarslan@gmail.com">kenbaevarslan@gmail.com <span class="arrow">↗</span></a>
-        <a href="https://github.com/arskenchik" target="_blank">github.com/arskenchik <span class="arrow">↗</span></a>
-        <a href="https://linkedin.com/in/arslan-kenbayev" target="_blank">linkedin <span class="arrow">↗</span></a>
-        <a href="CV_Arslan_Kenbayev.pdf" target="_blank">cv.pdf <span class="arrow">↗</span></a>
+        <a class="link-btn primary" href="CV_Arslan_Kenbayev.pdf" target="_blank">cv.pdf ↗</a>
+        <a class="link-btn" href="https://github.com/arskenchik" target="_blank">github.com/arskenchik ↗</a>
+        <a class="link-btn" href="https://linkedin.com/in/arslan-kenbayev" target="_blank">linkedin ↗</a>
+        <a class="link-btn" href="mailto:kenbaevarslan@gmail.com">email</a>
       </div>
     </div>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);line-height:2;text-align:right;padding-top:8px;">
-      <div>KAIST — B.S. EE</div>
-      <div>Daejeon / Seoul, KR</div>
-      <div style="color:var(--accent);">open to internships</div>
+    <div class="header-meta">
+      <div>KAIST · B.S. EE</div>
+      <div>Aug 2022 – Aug 2026</div>
+      <div>Daejeon, South Korea</div>
+      <div class="open">open to internships</div>
     </div>
   </div>
 </header>
 
-<!-- SKILLS STRIP -->
-<div class="skills-strip">
-  <div class="skills-inner">
-    <span class="skill-chip hi">PCB bring-up</span>
-    <span class="skill-chip hi">I2C / SPI / UART</span>
-    <span class="skill-chip hi">SystemVerilog / FPGA</span>
-    <span class="skill-chip hi">power management</span>
-    <span class="skill-chip hi">oscilloscope / DMM</span>
-    <span class="skill-chip hi">sensor integration</span>
-    <span class="skill-chip">C / C++</span>
-    <span class="skill-chip">firmware (nRF5 SDK)</span>
-    <span class="skill-chip">BLE</span>
-    <span class="skill-chip">Python</span>
-    <span class="skill-chip">Fusion 360</span>
-    <span class="skill-chip">SolidWorks</span>
-    <span class="skill-chip">ModelSim</span>
-    <span class="skill-chip">Linux</span>
-    <span class="skill-chip">OLED device fabrication</span>
-    <span class="skill-chip">I-V characterization</span>
-  </div>
+<div class="chips-row">
+  <span class="chip on">part selection</span>
+  <span class="chip on">PCB bring-up</span>
+  <span class="chip on">I2C / SPI / UART</span>
+  <span class="chip on">SystemVerilog / FPGA</span>
+  <span class="chip on">oscilloscope / DMM</span>
+  <span class="chip on">power management</span>
+  <span class="chip on">sensor integration</span>
+  <span class="chip">C / C++ firmware</span>
+  <span class="chip">nRF5 SDK</span>
+  <span class="chip">BLE</span>
+  <span class="chip">Python / Linux</span>
+  <span class="chip">Fusion 360</span>
+  <span class="chip">ModelSim</span>
+  <span class="chip">OLED fabrication</span>
 </div>
 
-<!-- PROJECTS -->
 <section>
-  <div class="section-label">featured projects</div>
-  <div class="project-grid">
+  <div class="sec-label">projects</div>
 
-    <!-- RISC-V -->
-    <div class="project-card">
-      <div class="status-bar">
-        <span class="status-dot"></span>
-        synthesizable · verified
+  <!-- RISC-V -->
+  <div class="project">
+    <div class="project-top">
+      <div class="project-title">5-Stage Pipelined RISC-V CPU</div>
+      <div class="project-date">Sep – Nov 2025</div>
+    </div>
+    <div class="project-links">
+      <span class="live-pill"><span class="live-dot"></span>synthesizable · verified</span>
+      <a class="gh-link" href="https://github.com/arskenchik/riscv-pipeline-cpu" target="_blank">github: riscv-pipeline-cpu ↗</a>
+    </div>
+    <p class="project-desc">FPGA/ASIC-synthesizable 5-stage RISC-V processor in SystemVerilog with full testbench verification in ModelSim. Directly relevant to FPGA-based data acquisition pipelines (OCT systems, high-speed digital).</p>
+    <ul class="bullets">
+      <li>Designed <b>hazard detection and data-forwarding logic</b> — eliminates pipeline stalls for all RAW dependencies across IF/ID/EX/MEM/WB stages</li>
+      <li>Verified with <b>two full testbench programs</b> (sort and forloop): 40 test cases all passing, 147 µs simulation time, 14722 cycles</li>
+      <li><b>Real debugging evidence:</b> caught forwarding bug mid-development — test #6 failed (0xfe8 vs expected 0xed8), traced via waveform analysis, corrected and re-verified</li>
+      <li>Architecture verified for <b>FPGA and ASIC synthesis targets</b> via EDA Playground constraint analysis</li>
+    </ul>
+    <div class="tags">
+      <span class="tag g">SystemVerilog</span>
+      <span class="tag g">ModelSim</span>
+      <span class="tag g">FPGA / ASIC</span>
+      <span class="tag g">pipeline hazard detection</span>
+      <span class="tag b">testbench verification</span>
+      <span class="tag b">timing analysis</span>
+    </div>
+    <div class="gallery g2">
+      <div class="img-wrap" onclick="openLb('sort_console.png')">
+        <img src="sort_console.png" alt="All 40 RISC-V sort testbench cases passing">
+        <div class="img-caption"><b>Sort testbench — 40/40 passed.</b> VSIM run -all output: all tests #1–40 passing at 147335 ns, 14722 cycles. Validates full sort program execution on the pipelined processor.</div>
       </div>
-      <div class="project-header">
-        <div class="project-title">5-Stage Pipelined RISC-V Processor <small>Sep – Nov 2025</small></div>
-        <div class="project-meta">FPGA / ASIC</div>
+      <div class="img-wrap" onclick="openLb('sort_waveform.png')">
+        <img src="sort_waveform.png" alt="ModelSim waveform — RISC-V sort program">
+        <div class="img-caption"><b>ModelSim waveform — sort program.</b> CLK, RST, NUM_INST, OUTPUT_PORT, HALT, plus all pipeline stage registers (IF/ID → ID/EX → EX/MEM → MEM/WB) and forwarding bus signals.</div>
       </div>
-      <p class="project-desc">
-        Full hardware implementation of a synthesizable RISC-V CPU — the kind of low-level digital design work that shows up in FPGA-based data acquisition systems (like OCT pipelines).
-      </p>
-      <ul class="project-highlights">
-        <li>Designed <strong>hazard detection and data-forwarding logic</strong> in SystemVerilog, eliminating pipeline stalls for RAW dependencies</li>
-        <li>Built comprehensive <strong>ModelSim testbenches</strong> — verified timing, waveform behavior, and edge-case instruction sequences</li>
-        <li>Architecture synthesizable to both <strong>FPGA and ASIC targets</strong>, verified with EDA Playground constraint analysis</li>
-        <li>Deliverable: full RTL source + annotated waveform screenshots available on GitHub</li>
-      </ul>
-      <div class="project-tags">
-        <span class="tag">SystemVerilog</span>
-        <span class="tag">ModelSim</span>
-        <span class="tag">EDA Playground</span>
-        <span class="tag">FPGA / ASIC</span>
-        <span class="tag">pipeline hazards</span>
+      <div class="img-wrap" onclick="openLb('waveform_forloop.png')">
+        <img src="waveform_forloop.png" alt="ModelSim waveform — RISC-V forloop program">
+        <div class="img-caption"><b>ModelSim waveform — forloop program.</b> Pipeline stage instructions visible across all 5 stages, PC write signal, ID/EX flush (branch handling), and forwarding A/B control lines across 450 ns.</div>
+      </div>
+      <div class="img-wrap" onclick="openLb('debug_failed_test.png')">
+        <img src="debug_failed_test.png" alt="Debugging: forwarding bug caught — test 6 failed">
+        <div class="img-caption"><b>Debugging — forwarding bug caught mid-development.</b> Test #6 failed: output_port = 0xfe8, expected 0xed8. Operand mis-forwarded through EX stage. Traced with waveform, corrected, all tests subsequently pass.</div>
       </div>
     </div>
-
-    <!-- SMARTWATCH -->
-    <div class="project-card">
-      <div class="status-bar">
-        <span class="status-dot"></span>
-        deployed · measured
-      </div>
-      <div class="project-header">
-        <div class="project-title">Ultra-Low-Power Smartwatch Firmware <small>Mar – Jun 2025</small></div>
-        <div class="project-meta">85 µA avg draw</div>
-      </div>
-      <p class="project-desc">
-        End-to-end embedded firmware project from power budget design to real current measurements — demonstrates the same hardware bring-up, power management, and sensor integration skills needed for implantable or surgical device electronics.
-      </p>
-      <ul class="project-highlights">
-        <li>Reduced average current draw to <strong>85 µA</strong> through IMU duty cycling and OLED auto-sleep — validated with bench DMM measurements</li>
-        <li><strong>Part selection and integration</strong>: LSM6DS step counter, APDS-9960 gesture sensor, I2C OLED display, BLE radio (Arduino Nano 33 BLE / nRF5 SDK)</li>
-        <li>Implemented <strong>state machine firmware</strong> in C managing gesture-driven UI, BLE sync events, and sensor polling windows</li>
-        <li>Full bring-up: schematic → breadboard → soldered prototype → current measurement → firmware tuning loop</li>
-      </ul>
-      <div class="project-tags">
-        <span class="tag">C / nRF5 SDK</span>
-        <span class="tag">I2C / BLE</span>
-        <span class="tag">power management</span>
-        <span class="tag blue">oscilloscope / DMM</span>
-        <span class="tag">IMU</span>
-        <span class="tag">sensor integration</span>
-      </div>
-    </div>
-
-    <!-- IoT (NDA-safe) -->
-    <div class="project-card">
-      <div class="status-bar">
-        <span class="status-dot orange"></span>
-        field-deployed · NDA-redacted
-      </div>
-      <div class="project-header">
-        <div class="project-title">Multi-Sensor Agricultural IoT Network <small>May – Mar 2026</small></div>
-        <div class="project-meta">IoT Device Engineer Intern</div>
-      </div>
-      <div class="nda-badge">NDA — architecture overview only</div>
-      <p class="project-desc">
-        Designed and deployed a master/slave wireless mesh network for environmental monitoring. This project covers the full hardware lifecycle that Neuralink references in their job description: part selection → schematic → physical layout → bring-up → field validation.
-      </p>
-      <ul class="project-highlights">
-        <li><strong>Part selection</strong>: evaluated and selected environmental sensors (CO2, soil moisture, atmospheric), LoRa modules, and power regulation components for 24/7 outdoor operation</li>
-        <li><strong>System-level schematic design</strong>: defined pin mapping for SPI/I2C/UART interfaces, power distribution rails, and sensor signal conditioning paths across Arduino-based slave nodes</li>
-        <li><strong>3D enclosure design</strong> in Fusion 360 — custom injection-mold-ready enclosure optimized for cable routing, thermal management, and field serviceability</li>
-        <li><strong>Hardware bring-up and debugging</strong>: used oscilloscope and DMM to validate I2C bus timing, verify power rail stability, and trace intermittent sensor faults under field conditions</li>
-        <li>Data pipeline: slave nodes → LoRa → Raspberry Pi gateway → gRPC/HTTP cloud with Nvidia Jetson AI vision module</li>
-      </ul>
-      <div class="project-tags">
-        <span class="tag">part selection</span>
-        <span class="tag">schematic design</span>
-        <span class="tag blue">PCB bring-up</span>
-        <span class="tag blue">oscilloscope / DMM</span>
-        <span class="tag">I2C / SPI / UART</span>
-        <span class="tag">LoRa mesh</span>
-        <span class="tag orange">Fusion 360</span>
-        <span class="tag orange">field-deployed</span>
-      </div>
-    </div>
-
-    <!-- Neuromorphic -->
-    <div class="project-card">
-      <div class="status-bar">
-        <span class="status-dot"></span>
-        active research
-      </div>
-      <div class="project-header">
-        <div class="project-title">Sub-mW Neuromorphic Wildfire Detection Node <small>Aug 2025 – Present</small></div>
-        <div class="project-meta">QAIST Research</div>
-      </div>
-      <p class="project-desc">
-        Developing field-deployable IoT sensor hardware with neuromorphic chips targeting sub-mW operation — directly analogous to the low-power, always-on sensing requirements in implantable neural devices.
-      </p>
-      <ul class="project-highlights">
-        <li>Targeting <strong>sub-mW operation</strong> via neuromorphic sensing architecture — relevant to battery-critical critical systems</li>
-        <li>Defined <strong>electrical and software interface specifications</strong> between neuromorphic sensing units and wireless mesh infrastructure</li>
-        <li>Coordinating hardware requirements with KAIST researchers and industry partners across sensing, power, and communication domains</li>
-      </ul>
-      <div class="project-tags">
-        <span class="tag">neuromorphic hardware</span>
-        <span class="tag">power budgeting</span>
-        <span class="tag">sensor interface design</span>
-        <span class="tag blue">wireless mesh</span>
-      </div>
-    </div>
-
-    <!-- Digital Clock -->
-    <div class="project-card">
-      <div class="project-header">
-        <div class="project-title">Digital Clock FSM in SystemVerilog <small>Feb – Jun 2024</small></div>
-        <div class="project-meta">RTL design</div>
-      </div>
-      <p class="project-desc">Foundational RTL project: designed FSMs, flip-flops, counters, and MUX trees in SystemVerilog and verified correct behavior through signal waveform analysis in EDA Playground.</p>
-      <div class="project-tags">
-        <span class="tag">SystemVerilog</span>
-        <span class="tag">FSM</span>
-        <span class="tag">EDA Playground</span>
-        <span class="tag gray">waveform verification</span>
-      </div>
-    </div>
-
   </div>
+
+  <!-- IoT -->
+  <div class="project">
+    <div class="project-top">
+      <div class="project-title">Multi-Sensor Agricultural IoT Network</div>
+      <div class="project-date">May 2025 – Mar 2026</div>
+    </div>
+    <div class="project-links">
+      <span class="nda-pill">⊘ NDA — architecture overview only</span>
+      <span class="org-label">IoT Device Engineer Intern · AXInvent</span>
+    </div>
+    <p class="project-desc">Full hardware lifecycle: part selection → system schematic → assembly → bring-up → field deployment. Master/slave LoRa mesh network for real-time environmental monitoring, validated live in the field.</p>
+    <ul class="bullets">
+      <li><b>Part selection:</b> CO2 sensor, soil moisture, wind speed (anemometer), rainfall, soil temp — selected for outdoor endurance, power budget, and I2C/UART compatibility</li>
+      <li><b>System-level schematic design:</b> defined pin mapping for all sensor interfaces (I2C/SPI/UART), power distribution rails (5V, DC battery), and LoRa module wiring across Arduino Uno slave nodes</li>
+      <li><b>Hardware bring-up and debugging:</b> powered nodes sequentially, verified I2C bus timing with oscilloscope, traced and resolved NULL sensor readings (visible in test data) by re-seating connectors and verifying pull-up resistor values</li>
+      <li><b>3D enclosure design</b> in Fusion 360 — weatherproof IP-rated housing for both master and slave nodes, optimized for cable routing and field serviceability</li>
+      <li>Data pipeline: slave Arduinos → LoRa → master Arduino → USB → Raspberry Pi 4 → gRPC/HTTP/2 → AXInvent server; validated with live multi-sensor acquisition logs</li>
+    </ul>
+    <div class="tags">
+      <span class="tag g">part selection</span>
+      <span class="tag g">schematic design</span>
+      <span class="tag b">hardware bring-up</span>
+      <span class="tag b">oscilloscope / DMM</span>
+      <span class="tag b">I2C / SPI / UART</span>
+      <span class="tag b">LoRa mesh</span>
+      <span class="tag o">Fusion 360 enclosure</span>
+      <span class="tag o">field-deployed</span>
+    </div>
+    <div class="gallery g2">
+      <div class="img-wrap" onclick="openLb('iot_devices.png')">
+        <img src="iot_devices.png" alt="Master and slave node hardware internals">
+        <div class="img-caption"><b>Final device hardware — master and slave nodes.</b> Master (left): Arduino + Raspberry Pi 4 + CO2 sensor + rainfall sensor + wind anemometer in weatherproof enclosure. Slave (right): Arduino + soil temp/moisture + DC battery + LoRa antenna.</div>
+      </div>
+      <div class="img-wrap" onclick="openLb('iot_field_deploy.png')">
+        <img src="iot_field_deploy.png" alt="Field deployment — master and slave nodes in field">
+        <div class="img-caption"><b>Field deployment — bring-up validation.</b> Master + 4 slave nodes deployed across open field, verifying LoRa range, sensor communication, and DC battery endurance under real outdoor conditions.</div>
+      </div>
+      <div class="img-wrap" onclick="openLb('iot_pipeline.png')">
+        <img src="iot_pipeline.png" alt="Communication pipeline diagram">
+        <div class="img-caption"><b>Communication pipeline.</b> Slave Arduinos → LoRa → master Arduino → USB → Raspberry Pi 4 → gRPC / HTTP/2 → AXInvent server. Defines full data path from sensor interface to cloud storage.</div>
+      </div>
+      <div class="img-wrap" onclick="openLb('iot_test_data.png')">
+        <img src="iot_test_data.png" alt="Field test data — sensor acquisition results">
+        <div class="img-caption"><b>Field test results — live sensor data.</b> Air temp (27.6°C), humidity (26.5%), wind speed (3.2 m/s), CO2 (633–639 ppm), soil moisture, soil temp. NULL rows = sensor fault isolation targets during bring-up debugging.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SMARTWATCH -->
+  <div class="project">
+    <div class="project-top">
+      <div class="project-title">Ultra-Low-Power Smartwatch Firmware</div>
+      <div class="project-date">Mar – Jun 2025</div>
+    </div>
+    <div class="project-links">
+      <span class="live-pill"><span class="live-dot"></span>85 µA avg · DMM-verified</span>
+      <a class="gh-link" href="https://github.com/arskenchik/smartwatch-firmware" target="_blank">github: smartwatch-firmware ↗</a>
+    </div>
+    <p class="project-desc">End-to-end embedded firmware from power budget design to measured current draw. Demonstrates sensor integration, I2C protocol handling, power state machines, and BLE — the same skill set needed in implantable and surgical device electronics.</p>
+    <ul class="bullets">
+      <li>Achieved <b>85 µA average current draw</b> — validated with bench DMM — through IMU duty cycling and OLED auto-sleep state machine</li>
+      <li><b>Part selection and integration:</b> LSM6DS step counter, APDS-9960 gesture sensor (both I2C), SSD1306 OLED display, nRF52840 BLE radio (Arduino Nano 33 BLE)</li>
+      <li>Implemented <b>C firmware on nRF5 SDK</b> managing gesture-driven UI state machine, BLE sync events, and multi-sensor polling windows with independent sleep cycles</li>
+      <li>Full bring-up loop: breadboard prototype → soldered assembly → current measurement → firmware power optimization</li>
+    </ul>
+    <div class="tags">
+      <span class="tag g">C / nRF5 SDK</span>
+      <span class="tag g">power management</span>
+      <span class="tag b">I2C / BLE</span>
+      <span class="tag b">sensor integration</span>
+      <span class="tag o">DMM current measurement</span>
+      <span class="tag n">state machine firmware</span>
+    </div>
+  </div>
+
+  <!-- DIGITAL CLOCK -->
+  <div class="project">
+    <div class="project-top">
+      <div class="project-title">Digital Clock FSM in SystemVerilog</div>
+      <div class="project-date">Feb – Jun 2024</div>
+    </div>
+    <div class="project-links">
+      <a class="gh-link" href="https://github.com/arskenchik/digital-clock-sv" target="_blank">github: digital-clock-sv ↗</a>
+    </div>
+    <p class="project-desc">RTL implementation of a digital clock with alarm control: FSMs, flip-flops, counters, and MUX trees in SystemVerilog. Three verified operating modes — normal time advance, time adjustment, and alarm set/clear.</p>
+    <ul class="bullets">
+      <li>Designed <b>alarm control FSM</b> with i_set_alarm / i_turn_off_alarm inputs and o_alarm output — edge transitions verified with ModelSim testbenches</li>
+      <li>Verified <b>hours, minutes, seconds tracking</b> across all three operating modes with dedicated waveform analysis</li>
+    </ul>
+    <div class="tags">
+      <span class="tag g">SystemVerilog</span>
+      <span class="tag g">FSM design</span>
+      <span class="tag b">EDA Playground</span>
+      <span class="tag n">waveform verification</span>
+    </div>
+    <div class="gallery g3">
+      <div class="img-wrap" onclick="openLb('sml1.png')">
+        <img src="sml1.png" alt="Digital clock waveform — normal time advance">
+        <div class="img-caption"><b>Normal time advance</b> — o_second, o_minute, o_hour incrementing correctly with i_clk. Reset and adjustment disabled.</div>
+      </div>
+      <div class="img-wrap" onclick="openLb('sml2.png')">
+        <img src="sml2.png" alt="Digital clock waveform — time adjustment mode">
+        <div class="img-caption"><b>Time adjustment mode</b> — i_adjust_time asserted; i_hour_new / i_minute_new loaded. Verified correct state transition and output register update.</div>
+      </div>
+      <div class="img-wrap" onclick="openLb('sml3.png')">
+        <img src="sml3.png" alt="Digital clock waveform — alarm set and clear">
+        <div class="img-caption"><b>Alarm set and clear</b> — o_alarm asserted after target time via i_set_alarm, cleared by i_turn_off_alarm. Edge timing verified.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEUROMORPHIC -->
+  <div class="project">
+    <div class="project-top">
+      <div class="project-title">Sub-mW Neuromorphic Wildfire Detection Node</div>
+      <div class="project-date">Aug 2025 – Present</div>
+    </div>
+    <div class="project-links">
+      <span class="live-pill"><span class="live-dot"></span>active research</span>
+      <span class="org-label">Research Assistant · QAIST</span>
+    </div>
+    <p class="project-desc">Field-deployable IoT sensor hardware with neuromorphic chips targeting sub-mW operation — analogous to always-on, battery-constrained sensing in implantable neural devices.</p>
+    <ul class="bullets">
+      <li>Targeting <b>sub-mW operation</b> via neuromorphic sensing architecture; relevant to power-constrained critical systems</li>
+      <li>Defined <b>electrical and software interface specifications</b> between neuromorphic sensing units and wireless mesh infrastructure</li>
+      <li>Coordinating hardware requirements with KAIST researchers and industry partners across sensing, power, and wireless communication domains</li>
+    </ul>
+    <div class="tags">
+      <span class="tag g">neuromorphic hardware</span>
+      <span class="tag b">power budgeting</span>
+      <span class="tag b">sensor interface spec</span>
+      <span class="tag o">wireless mesh</span>
+    </div>
+  </div>
+
 </section>
 
-<!-- HARDWARE SKILLS -->
 <section>
-  <div class="section-label">hardware skills</div>
-  <table class="skills-table">
-    <tr>
-      <td>design</td>
-      <td>Part selection, system-level schematic design, analog/digital circuit assembly, 3D enclosure design (Fusion 360, SolidWorks)</td>
-    </tr>
-    <tr>
-      <td>bring-up</td>
-      <td>Hardware bring-up and debugging, oscilloscope waveform analysis, DMM power rail validation, I2C/SPI/UART protocol debugging</td>
-    </tr>
-    <tr>
-      <td>embedded</td>
-      <td>C, C++, firmware development on nRF5 SDK / Segger Studio, Arduino, sensor integration, BLE, power management</td>
-    </tr>
-    <tr>
-      <td>digital design</td>
-      <td>SystemVerilog, Verilog, pipeline design, FSM synthesis, ModelSim testbenches, FPGA/ASIC synthesis flows</td>
-    </tr>
-    <tr>
-      <td>platforms</td>
-      <td>Arduino Nano 33 BLE, Nvidia Jetson, Raspberry Pi, RISC-V, nRF52 family</td>
-    </tr>
-    <tr>
-      <td>lab</td>
-      <td>Oscilloscope, DMM, power supplies, I-V characterization, thin-film device fabrication (OLED)</td>
-    </tr>
+  <div class="sec-label">hardware skills</div>
+  <table class="stab">
+    <tr><td>design</td><td>Part selection, system-level schematic design, analog/digital circuit assembly, 3D enclosure design (Fusion 360, SolidWorks)</td></tr>
+    <tr><td>bring-up</td><td>Hardware bring-up, oscilloscope waveform analysis, DMM power rail verification, I2C/SPI/UART protocol debugging</td></tr>
+    <tr><td>embedded</td><td>C, C++, nRF5 SDK / Segger Studio, Arduino, sensor integration, BLE, power state machines</td></tr>
+    <tr><td>digital design</td><td>SystemVerilog, Verilog, FSM synthesis, 5-stage pipelined CPU, testbench verification, ModelSim, EDA Playground</td></tr>
+    <tr><td>platforms</td><td>Arduino Uno/Mega, nRF52840 (Nano 33 BLE), Raspberry Pi 4, Nvidia Jetson, RISC-V</td></tr>
+    <tr><td>lab equipment</td><td>Oscilloscope, DMM, power supplies, I-V characterization, OLED thin-film device fabrication</td></tr>
+    <tr><td>software</td><td>Python, C++, Linux, Git, VS Code, MATLAB</td></tr>
   </table>
 </section>
 
-<!-- EXPERIENCE -->
 <section>
-  <div class="section-label">experience</div>
-  <div class="timeline">
-    <div class="timeline-item">
-      <div class="timeline-date">Aug 2025 –<br>present</div>
-      <div class="timeline-content">
-        <div class="timeline-role">Research Assistant — Hardware</div>
-        <div class="timeline-org">QAIST · Almaty, Kazakhstan</div>
-        <div class="timeline-detail">Sub-mW neuromorphic IoT sensor node development. Electrical/software interface specification for wireless mesh-network integration.</div>
+  <div class="sec-label">experience</div>
+  <div class="tl">
+    <div class="tl-row">
+      <div class="tl-date">Aug 2025 –<br>present</div>
+      <div>
+        <div class="tl-role">Research Assistant — Hardware</div>
+        <div class="tl-org">QAIST · Almaty, Kazakhstan</div>
+        <div class="tl-detail">Sub-mW neuromorphic IoT sensor node development. Electrical/software interface specification for wireless mesh-network integration with industry partners.</div>
       </div>
     </div>
-    <div class="timeline-item">
-      <div class="timeline-date">May 2025 –<br>Mar 2026</div>
-      <div class="timeline-content">
-        <div class="timeline-role">IoT Device Engineer Intern</div>
-        <div class="timeline-org">AXInvent · Daejeon, South Korea</div>
-        <div class="timeline-detail">Full hardware lifecycle: part selection, schematic design, PCB assembly, enclosure design, bring-up, field deployment. I2C/SPI/UART debugging with oscilloscope/DMM.</div>
+    <div class="tl-row">
+      <div class="tl-date">May 2025 –<br>Mar 2026</div>
+      <div>
+        <div class="tl-role">IoT Device Engineer Intern</div>
+        <div class="tl-org">AXInvent · Daejeon, South Korea</div>
+        <div class="tl-detail">Full hardware lifecycle: part selection, schematic design, PCB assembly, 3D enclosure design (Fusion 360), bring-up, field deployment. I2C/SPI/UART debugging with oscilloscope/DMM.</div>
       </div>
     </div>
-    <div class="timeline-item">
-      <div class="timeline-date">May –<br>Aug 2025</div>
-      <div class="timeline-content">
-        <div class="timeline-role">Semiconductor Engineer Intern</div>
-        <div class="timeline-org">KAIST IOEL Lab · Daejeon, South Korea</div>
-        <div class="timeline-detail">Organic OLED device fabrication, I-V sweep characterization, layer composition tuning. Healthcare organic electronics applications.</div>
+    <div class="tl-row">
+      <div class="tl-date">May –<br>Aug 2025</div>
+      <div>
+        <div class="tl-role">Semiconductor Engineer Intern</div>
+        <div class="tl-org">KAIST IOEL Lab · Daejeon, South Korea</div>
+        <div class="tl-detail">Organic OLED device fabrication from CO2-derived/organosilicon compounds. I-V sweep characterization, layer composition tuning toward target turn-on voltage and luminance output.</div>
       </div>
     </div>
-    <div class="timeline-item">
-      <div class="timeline-date">Jul –<br>Sep 2024</div>
-      <div class="timeline-content">
-        <div class="timeline-role">Automation Engineer Intern</div>
-        <div class="timeline-org">AAEngineering · Almaty, Kazakhstan</div>
-        <div class="timeline-detail">Sensor design validation in SolidWorks, RF/network topology analysis for multi-node IoT deployment, automated control logic design.</div>
+    <div class="tl-row">
+      <div class="tl-date">Jul –<br>Sep 2024</div>
+      <div>
+        <div class="tl-role">Automation Engineer Intern</div>
+        <div class="tl-org">AAEngineering · Almaty, Kazakhstan</div>
+        <div class="tl-detail">Sensor design validation in SolidWorks, RF/network topology analysis for multi-node IoT deployment, automated control logic design for ore segregation system.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <span>Arslan Kenbayev · KAIST EE · 2026</span>
+  <span>Arslan Kenbayev · KAIST EE 2026 · <a href="https://arskenchik.github.io">arskenchik.github.io</a></span>
   <span>
-    <a href="mailto:kenbaevarslan@gmail.com">kenbaevarslan@gmail.com</a>
-    &nbsp;·&nbsp;
-    <a href="https://github.com/arskenchik">github</a>
-    &nbsp;·&nbsp;
+    <a href="mailto:kenbaevarslan@gmail.com">kenbaevarslan@gmail.com</a> ·
+    <a href="https://github.com/arskenchik">github</a> ·
     <a href="https://linkedin.com/in/arslan-kenbayev">linkedin</a>
   </span>
 </footer>
 
-</div><!-- .container -->
-</div><!-- .wrap -->
+</div>
+
+<script>
+function openLb(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() {
+  document.getElementById('lb').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+</script>
 </body>
 </html>
